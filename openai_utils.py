@@ -1,8 +1,8 @@
 from openai import OpenAI
+import streamlit as st
 
 def get_response(conversation):
     client = OpenAI(
-        #api_key = st.secrets["OPENAI_API_KEY"]
         api_key = st.secrets["OPENAI_API_KEY"]
     )
     # Send a message to the assistant
