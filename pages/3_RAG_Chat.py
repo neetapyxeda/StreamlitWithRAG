@@ -1,7 +1,10 @@
 import streamlit as st
-import openai
+from openai import OpenAI
 from pinecone_utils import filter_matching_docs
 
+client = OpenAI(
+    api_key = st.secrets["OPENAI_API_KEY"]
+)
 
 # title of the web app
 st.title("Retrieval Augment Chat")
@@ -39,10 +42,10 @@ if prompt := st.chat_input("What is up?"):
                       for m in st.session_state.messages]
         messageList.append({"role": "user", "content": prompt_guidance})
         
-        for response in openai.ChatCompletion.create(
+        for response in client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=messageList, stream=True):
-            full_response += response.choices[0].delta.get("content", "")
+            full_response += f"{response.choices[0].delta.content if response.choices[0].delta.content else '' }"
             message_placeholder.markdown(full_response + "▌")
         message_placeholder.markdown(full_response)
     with st.sidebar.expander("Retreival context provided to GPT-3"):
