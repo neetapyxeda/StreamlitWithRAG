@@ -1,16 +1,5 @@
 import streamlit as st
-import openai
-
-
-def get_response(conversation):
-    # Send a message to the assistant
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=conversation
-    )
-
-    return response['choices'][0]['message']['content']
-
+from openai_utils import get_response
 
 # web title
 st.title("Message with AI")

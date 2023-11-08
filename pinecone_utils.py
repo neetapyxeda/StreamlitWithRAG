@@ -20,7 +20,7 @@ os.environ['LANGCHAIN_HANDLER'] = 'langchain'
 
 os.environ['PINECONE_API_KEY'] = "b228e7a2-027a-4b3e-b65b-c06e8931c4e4"
 os.environ['PINECONE_API_ENV'] = "gcp-starter"
-os.environ['PINECONE_INDEX_NAME'] = "test"
+os.environ['PINECONE_INDEX_NAME'] = "rag"
 
 
 openai.api_key=os.environ['OPENAI_API_KEY']
@@ -55,7 +55,7 @@ def upload_to_pinecone(text_document: str, file_name, chunk_size: int = 1000 ) -
 
     for index, sub_docs in enumerate(texts):
         document_hash = hashlib.md5(sub_docs.page_content.encode("utf-8"))
-        embedding = openai.Embedding.create(model= MODEL,input=sub_docs.page_content)['data'][0]['embedding']
+        embedding = openai.embeddings.create(model= MODEL,input=sub_docs.page_content).data[0].embedding
         metadata = {"doc_name":file_name, "chunk": str(uuid.uuid4()), "text": sub_docs.page_content, "doc_index":index}
         pinecone_index.upsert([(document_hash.hexdigest(), embedding, metadata)])
         print("{} ==> Done".format(index))
@@ -80,8 +80,8 @@ def filter_matching_docs(question: str, top_chunks: int = 3, get_text: bool = Fa
     
     index=pinecone.Index(os.environ['PINECONE_INDEX_NAME'])
 
-    question_embed_call = openai.Embedding.create(input = question ,engine = MODEL)
-    query_embeds = question_embed_call['data'][0]['embedding']
+    question_embed_call = openai.embeddings.create(input = question ,model = MODEL)
+    query_embeds = question_embed_call.data[0].embedding
     response = index.query(query_embeds,top_k = top_chunks,include_metadata = True)
 
     #get the data out
