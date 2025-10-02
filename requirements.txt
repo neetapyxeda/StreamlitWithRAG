@@ -1,5 +1,6 @@
 PyPDF2
-pinecone-client
+pinecone
 langchain
 openai
+
 youtube_transcript_api
