@@ -2,5 +2,6 @@ PyPDF2
 pinecone
 langchain
 openai
-
+langchain_community
 youtube_transcript_api
+
