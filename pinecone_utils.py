@@ -3,6 +3,7 @@ import os
 import uuid
 from typing import List
 import pinecone
+from pinecone import Pinecone
 import openai
 import streamlit as st
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -148,3 +149,4 @@ def QA_with_your_docs(user_question: str, text_list: List[str], chain_type: str 
 
 
     return chain_response
+
