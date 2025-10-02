@@ -24,7 +24,8 @@ os.environ['PINECONE_INDEX_NAME'] = "rag"
 
 
 openai.api_key=os.environ['OPENAI_API_KEY']
-pinecone.init( api_key=os.environ['PINECONE_API_KEY'], environment=os.environ['PINECONE_API_ENV'])
+#pinecone.init( api_key=os.environ['PINECONE_API_KEY'], environment=os.environ['PINECONE_API_ENV'])
+pc = Pinecone(pi_key=os.environ.get("PINECONE_API_KEY"))
 pinecone_index=pinecone.Index(os.environ['PINECONE_INDEX_NAME'])
 
 
@@ -144,5 +145,6 @@ def QA_with_your_docs(user_question: str, text_list: List[str], chain_type: str 
 
     chain_response = chain.run(input_documents = all_docs, question = user_question )
     print(chain_response)
+
 
     return chain_response
